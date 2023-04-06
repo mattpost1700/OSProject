@@ -1,0 +1,7 @@
+appName: app1
+namespace: test
+
+image:
+  repository: ghcr.io/mattpost1700/winproject
+  tag: latest
+  pullPolicy: IfNotPresent

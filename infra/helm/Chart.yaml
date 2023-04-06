@@ -1,0 +1,13 @@
+apiVersion: v2
+description: This is a deployable Helm chart for infrastructure
+name: argo
+version: 1.0.0
+
+dependencies:
+  - name: argo-workflows
+    version: 0.22.13
+    repository: https://argoproj.github.io/argo-helm
+
+  - name: argo-events
+    version: 2.1.3
+    repository: https://argoproj.github.io/argo-helm

@@ -1,0 +1,4 @@
+image:
+  registry: gcr.io/tough-transport-382603
+  tag: latest
+  pullPolicy: Always

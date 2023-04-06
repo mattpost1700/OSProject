@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  entrypoint: only-entrypoint
+  synchronization:
+    semaphore:
+      configMapKeyRef:
+        name: sync-cm
+        key: mutex
+  templates:
+  - name: only-entrypoint
+    container:
+      name: {{ .Release.Name }}
+      command: ["python"]
+      args: ["main.py"]
+      image: {{ include "simple-res.image" . }}
+      imagePullPolicy: {{ .Values.image.pullPolicy }}
+      env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+    imagePullSecrets:
+    - name: gcr-json-key

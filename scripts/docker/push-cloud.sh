@@ -1,0 +1,1 @@
+docker push gcr.io/tough-transport-382603/$1

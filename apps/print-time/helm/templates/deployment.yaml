@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  containers:
+  - name: {{ .Release.Name }}
+    command: ["python"]
+    args: ["main.py"]
+    image: {{ include "app1.image" . }}
+    imagePullPolicy: {{ .Values.image.pullPolicy }}
+    env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+  imagePullSecrets:
+  - name: gcr-json-key

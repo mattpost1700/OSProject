@@ -64,6 +64,16 @@ echo $ARGO_TOKEN
 # Log into GitHub registry
 `echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin`
 
+# Log into GCP registry
+```
+kubectl create secret docker-registry gcr-json-key \
+ --docker-server=gcr.io \
+ --docker-username=_json_key \
+ --docker-password="$(cat ./g-reg-key.json)"
+
+kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
+```
+
 # Secret from GH reg
 ```
 kubectl -n <k8s-namespace> create secret docker-registry <k8s-docker-registry-secret-name> --docker-server=ghcr.io --docker-username=<github-username> --docker-password=<github-personal-access-token>  --docker-email=<email-address>

@@ -2,3 +2,5 @@
 *.tgz
 g-reg-key.json
 charts/
+*.tmp
+*.pyc

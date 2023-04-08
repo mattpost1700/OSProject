@@ -15,9 +15,11 @@ spec:
       imagePullPolicy: {{ .Values.image.pullPolicy }}
       ports:
         - containerPort: 80
-          name: http-web-svc-port
+          name: http-svc-port
       env:
         - name: PYTHONUNBUFFERED
           value: "1"
+        - name: RUNNING_IN_CLUSTER
+          value: true
     imagePullSecrets:
     - name: gcr-json-key

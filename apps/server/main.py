@@ -1,3 +1,4 @@
+import os
 import uuid
 
 import uvicorn
@@ -36,7 +37,10 @@ def _log(s: str, tag: str = "INFO"):
 
 
 def config_kube():
-    my_configuration = config.load_kube_config()
+    if os.environ.get("RUNNING_IN_CLUSTER"):
+        my_configuration = config.load_incluster_config()
+    else:
+        my_configuration = config.load_kube_config()
     _log("Successfully set kube config!")
 
     global _global_client

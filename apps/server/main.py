@@ -71,7 +71,7 @@ def set_argo_sem(
     try:
         # Perform patch
         configmap_patched = _global_cm_api.patch(name=cm_name, namespace=namespace, body=patch_manifest)
-        _log(f"Response from k8s: {configmap_patched}")
+        # _log(f"Response from k8s: {configmap_patched}")
 
         return f"Data patched to: {configmap_patched['data']}"
 
@@ -97,7 +97,7 @@ def ping_workflow(resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, na
     # Get all workflows
     try:
         workflows_resp = _global_wf_api.get()
-        _log(f"Response from k8s: {workflows_resp}")
+        # _log(f"Response from k8s: {workflows_resp}")
 
         all_workflows = workflows_resp.to_dict()["items"]
         for item in all_workflows:
@@ -118,16 +118,16 @@ def ping_workflow(resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, na
     # Patch (Ping) all waiting workflows
     try:
         patch_manifest = {"metadata": {"labels": {"usesSync": str(uuid.uuid4())}}}
-        _log(f"\n\nBody to submit: {patch_manifest}", tag="DEBUG")
+        # _log(f"\n\nBody to submit: {patch_manifest}", tag="DEBUG")
 
         for waiting_workflow_name in workflows_waiting_for_semas:
-            _log(f"Data: {waiting_workflow_name}, {namespace}\n\n", tag="DEBUG")
+            # _log(f"Data: {waiting_workflow_name}, {namespace}\n\n", tag="DEBUG")
             
             workflows_ping_resp = _global_wf_api.patch(
                 name=waiting_workflow_name, namespace=namespace, body=patch_manifest, content_type="application/merge-patch+json"
             )
             _log(f"Patched: {waiting_workflow_name}")
-            _log(f"Response from k8s from ping: {workflows_ping_resp}")
+            # _log(f"Response from k8s from ping: {workflows_ping_resp}")
 
     except client.exceptions.ApiException as e:
         _log(f"Could not patch workflow!\nGot error {e}", tag="ERROR")

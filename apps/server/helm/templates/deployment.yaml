@@ -5,11 +5,6 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   entrypoint: only-entrypoint
-  synchronization:
-    semaphore:
-      configMapKeyRef:
-        name: sync-cm
-        key: mutex
   templates:
   - name: only-entrypoint
     container:

@@ -11,7 +11,7 @@ spec:
     semaphore:
       configMapKeyRef:
         name: sync-cm
-        key: mutex
+        key: simple-resource
   templates:
   - name: only-entrypoint
     container:

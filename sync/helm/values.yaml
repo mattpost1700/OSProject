@@ -1,3 +1,4 @@
 resources:
-- resource: "2"
+- resource: "1"
+- simple-resource: "2"
 - mutex: "1"

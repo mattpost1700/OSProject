@@ -1,25 +1,46 @@
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: WorkflowTemplate
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-svc
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  selector:
+    app.kubernetes.io/name: {{ .Release.Name }}
+  ports:
+  - protocol: TCP
+    port: 8000
+---
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: {{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}
 spec:
-  entrypoint: only-entrypoint
-  templates:
-  - name: only-entrypoint
-    container:
-      name: {{ .Release.Name }}
-      command: ["python"]
-      args: ["main.py"]
-      image: {{ include "server.image" . }}
-      imagePullPolicy: {{ .Values.image.pullPolicy }}
-      ports:
-        - containerPort: 80
-          name: http-svc-port
-      env:
-        - name: PYTHONUNBUFFERED
-          value: "1"
-        - name: RUNNING_IN_CLUSTER
-          value: "true"
-    imagePullSecrets:
-    - name: gcr-json-key
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        command: ["python"]
+        args: ["main.py"]
+        image: {{ include "server.image" . }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - containerPort: 8000
+        env:
+          - name: PYTHONUNBUFFERED
+            value: "1"
+          - name: RUNNING_IN_CLUSTER
+            value: "true"
+          # - name: no_proxy
+          #   value: .svc,.cluster.local
+      imagePullSecrets:
+      - name: gcr-json-key

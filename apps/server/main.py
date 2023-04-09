@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from kubernetes import client, config, dynamic
 
 NAMESPACE = "dev"
-CM_NAME = "sync-cm"
+CM_NAME = "sync"
 RESOURCE_NAME = "resource"
 
 app = FastAPI()
@@ -18,6 +18,12 @@ _global_client = None
 @app.get("/")
 async def root(resources: int, resource_name: str = None, cm_name: str = None, ns: str = None):
     config_kube()
+    if not resource_name:
+        resource_name = RESOURCE_NAME
+    if not cm_name:
+        cm_name = CM_NAME
+    if not ns:
+        ns = NAMESPACE
     _log(f"Received a query for `{resources}` `{resource_name}` resources")
     
     sem_http_resp = set_argo_sem(resources, resource_name=resource_name, cm_name=cm_name, namespace=ns)
@@ -53,12 +59,6 @@ def config_kube():
 def set_argo_sem(
     num_of_resources: int, resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, namespace: str = NAMESPACE,
 ):
-    if not resource_name:
-        resource_name = RESOURCE_NAME
-    if not cm_name:
-        cm_name = CM_NAME
-    if not namespace:
-        namespace = NAMESPACE
 
     _log(f"Trying to set `{cm_name}.{resource_name}` to `{num_of_resources}` (in ns = `{namespace}`)...")
 
@@ -85,12 +85,6 @@ def set_argo_sem(
 
 
 def ping_workflow(resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, namespace: str = NAMESPACE):
-    if not resource_name:
-        resource_name = RESOURCE_NAME
-    if not cm_name:
-        cm_name = CM_NAME
-    if not namespace:
-        namespace = NAMESPACE
 
     semaphore_str = f"{namespace}/ConfigMap/{cm_name}/{resource_name}"
 
@@ -104,6 +98,7 @@ def ping_workflow(resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, na
         # _log(f"Response from k8s: {workflows_resp}")
 
         all_workflows = workflows_resp.to_dict()["items"]
+        _log(f"{len(all_workflows)} workflows found")
         for item in all_workflows:
             item_name = item["metadata"]["name"]
             try:
@@ -143,4 +138,4 @@ def ping_workflow(resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, na
 if __name__ == "__main__":
     config_kube()
 
-    uvicorn.run("app", host="localhost", port=8000, reload=False)
+    uvicorn.run("main:app", port=8000, reload=False)

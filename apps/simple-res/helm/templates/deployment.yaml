@@ -10,7 +10,7 @@ spec:
   synchronization:
     semaphore:
       configMapKeyRef:
-        name: sync-cm
+        name: sync
         key: simple-resource
   templates:
   - name: only-entrypoint

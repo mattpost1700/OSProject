@@ -81,3 +81,7 @@ kubectl -n <k8s-namespace> create secret docker-registry <k8s-docker-registry-se
 
 kubectl -n test create secret docker-registry gh-reg-cred --docker-server=ghcr.io --docker-username=mattpost1700 --docker-password=<github-personal-access-token>
 
+# curl Pod
+```
+kubectl run mycurlpod -n dev --image=curlimages/curl -i --tty -- sh
+```

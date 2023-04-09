@@ -20,6 +20,6 @@ spec:
         - name: PYTHONUNBUFFERED
           value: "1"
         - name: RUNNING_IN_CLUSTER
-          value: true
+          value: "true"
     imagePullSecrets:
     - name: gcr-json-key

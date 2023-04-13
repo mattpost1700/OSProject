@@ -1,1 +1,1 @@
-Rancher pass: JNVj0IslQbYdFt9D
+GKE Cluster Rancher pass: JNVj0IslQbYdFt9D

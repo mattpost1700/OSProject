@@ -14,9 +14,3 @@ metadata:
     kubernetes.io/service-account.name: argo-user
 type: kubernetes.io/service-account-token
 EOF
-
-# echo "Waiting 5 seconds for creation..."
-# sleep 5
-
-# source /login-token.sh
-

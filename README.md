@@ -87,3 +87,9 @@ kubectl create secret docker-registry gh-reg-cred --docker-server=ghcr.io --dock
 ```
 kubectl run mycurlpod -n dev --image=curlimages/curl -i --tty -- sh
 ```
+
+# Installing an app
+This is handled by out scripts but it is worth noting how this is done. Below is an example `print-time`
+```
+helm install --namespace dev print-time apps/print-time/helm/
+```

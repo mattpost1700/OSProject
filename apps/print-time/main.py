@@ -1,3 +1,9 @@
+"""
+Author: Matthew Post
+File: main.py
+Description: This module simply prints the current time every 10 seconds forever
+"""
+
 import datetime
 import time
 

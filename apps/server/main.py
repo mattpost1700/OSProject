@@ -13,7 +13,7 @@ from kubernetes import client, config, dynamic
 
 NAMESPACE = "dev"
 CM_NAME = "sync"
-RESOURCE_NAME = "resource"
+RESOURCE_NAME = "simple-resource"
 
 app = FastAPI()
 

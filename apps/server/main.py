@@ -25,7 +25,7 @@ _global_client = None
 
 
 @app.get("/")
-async def root(resources: int, resource_name: str = None, cm_name: str = None, ns: str = None) -> dict[str, str]:
+async def root(resources: int, resource_name: str = None, cm_name: str = None, ns: str = None) -> dict:
     """
     A root endpoint to the server. The main endpoint that changes the number of instances in the cluster
 
@@ -36,7 +36,7 @@ async def root(resources: int, resource_name: str = None, cm_name: str = None, n
         ns (str, optional): The namespace where the config map is located. Defaults to None.
 
     Returns:
-        dict[str, str]: The response from both requests to the cluster
+        dict: The response from both requests to the cluster
     """
     config_kube()
 
@@ -56,12 +56,12 @@ async def root(resources: int, resource_name: str = None, cm_name: str = None, n
 
 
 @app.get("/set_config")
-async def manual_set_config() -> dict[str, str]:
+async def manual_set_config() -> dict:
     """
     A manual endpoint that allows the user to config the service to have access to the cluster.
 
     Returns:
-        dict[str, str]: A success message if the configuration has no exceptions
+        dict: A success message if the configuration has no exceptions
     """
     config_kube()
 
@@ -148,7 +148,7 @@ def set_argo_sem(
 
 def ping_workflow(
     resource_name: str = RESOURCE_NAME, cm_name: str = CM_NAME, namespace: str = NAMESPACE
-) -> dict[str, str]:
+) -> dict:
     """
     Pings all workflows waiting for a resource
 
@@ -161,7 +161,7 @@ def ping_workflow(
         k8s_exception: There was was error with the config map api or workflow api / k8s api
 
     Returns:
-        dict[str, str]: The workflows that were pinged
+        dict: The workflows that were pinged
     """
     workflows_waiting_for_semas = []
     semaphore_str = f"{namespace}/ConfigMap/{cm_name}/{resource_name}"

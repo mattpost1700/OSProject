@@ -52,7 +52,7 @@ async def root(resources: int, resource_name: str = None, cm_name: str = None, n
     sem_http_resp = set_argo_sem(resources, resource_name=resource_name, cm_name=cm_name, namespace=ns)
     sf_http_resp = ping_workflow(resource_name=resource_name, cm_name=cm_name, namespace=ns)
 
-    return {"msg", f"{sem_http_resp}\n{sf_http_resp}"}
+    return {"msg": f"{sem_http_resp}\n{sf_http_resp}"}
 
 
 @app.get("/set_config")
